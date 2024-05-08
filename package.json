@@ -1,0 +1,14 @@
+{
+  "name": "sayonarachannel",
+  "version": "0.0.1",
+  "description": "Removes you from channels which you have been mass-added to on Slack.",
+  "main": "index.js",
+  "repository": "https://github.com/aboutdavid/sayonarachannel",
+  "author": "aboutdavid (aboutdavid.me)",
+  "license": "AGPL-3.0-or-later",
+  "private": true,
+  "dependencies": {
+    "@slack/bolt": "^3.18.0",
+    "dotenv": "^16.4.5"
+  }
+}
