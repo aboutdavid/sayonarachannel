@@ -28,14 +28,16 @@ const app = new App({
     });
 
     app.shortcut('remove_from_message_channels', async ({ ack, body, say, client, respond }) => {
-        const channelIds = body.message.text.match(/<#(.*?)\|/g).map(match => match.replace(/<#|(?:\|)/g, ''));
+        await ack()
 
-        var str = "Will remove you from the following channels. Confirm?\n"
+        const channelMatches = body.message.text.match(/<#(.*?)\|/g)
+        if (!channelMatches) return await respond("No channels found.")
+        const channelIds = channelMatches.map(match => match.replace(/<#|(?:\|)/g, ''));
+        var str = `You will be removed you from the following channel${channelIds.length != 1 ? "s" : ""}. Confirm?\n`
         channelIds.forEach(function (id) {
             str += `- <#${id}>\n`
         })
 
-        await ack()
         await respond({
             "blocks": [
                 {
