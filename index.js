@@ -10,7 +10,7 @@ const app = new App({
 
 
 (async () => {
-    app.action('deny_channel_kicks', async ({ body, ack, respond }) => {
+    app.action('deny_channel_kicks', async ({ ack, respond }) => {
         await ack()
         await respond("Canceled. Removed from 0 channels.")
     });
@@ -32,7 +32,7 @@ const app = new App({
         await respond(`Removed from ${ids.length} channel${ids.length != 1 ? "s" : ""}.`)
     });
 
-    app.shortcut('remove_from_message_channels', async ({ ack, body, say, client, respond }) => {
+    app.shortcut('remove_from_message_channels', async ({ ack, body, respond }) => {
         await ack()
 
         const channelMatches = body.message.text.match(/<#(.*?)\|/g)
