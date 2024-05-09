@@ -10,8 +10,13 @@ const app = new App({
 
 
 (async () => {
+    app.action('deny_channel_kicks', async ({ body, ack, respond }) => {
+        await ack()
+        await respond("Canceled. Removed from 0 channels.")
+    });
     app.action('confirm_channel_kicks', async ({ body, ack, respond }) => {
         await ack()
+        if (!body.actions[0]) return await respond("No actions found. Please report this.")
         const ids = JSON.parse(body.actions[0].value)
         ids.forEach(async id => {
             try {
@@ -21,7 +26,7 @@ const app = new App({
                     user: body.user.id
                 })
             }
-            catch (e) { 
+            catch (e) {
             }
         })
         await respond(`Removed from ${ids.length} channel${ids.length != 1 ? "s" : ""}.`)
@@ -59,6 +64,17 @@ const app = new App({
                             },
                             "value": JSON.stringify(channelIds),
                             "action_id": "confirm_channel_kicks",
+                            "style": "danger"
+                        },
+                        {
+                            "type": "button",
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Cancel",
+                                "emoji": false
+                            },
+                            "value": "cancel",
+                            "action_id": "deny_channel_kicks"
                         }
                     ]
                 }
